@@ -19,24 +19,24 @@ import { toast } from "sonner";
 import useOrganization from "@/hooks/useOrganization";
 import { useSWRConfig } from "swr";
 
-export function CreateOrganizationModal() {
+export function CreateProjectModal() {
   const { mutate } = useSWRConfig();
-  const [organizationName, setOrganizationName] = useState("");
+  const [projectName, setProjectName] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.MouseEvent) => {
       e.preventDefault();
       try {
-        if (!organizationName) {
+        if (!projectName) {
           toast.error("Please provide organization name");
           return;
         }
 
-        const org = await CreateOrganization(organizationName);
+        const org = await CreateOrganization(projectName);
 
-        mutate("/api/getOrganization");
-        toast.success("Organization created successfully");
+        // mutate("/api/getOrganization");
+        // toast.success("Organization created successfully");
 
         // Close the dialog after successful submission
         setOpen(false);
@@ -46,17 +46,17 @@ export function CreateOrganizationModal() {
         throw Error(error?.message || "Internal server error");
       }
     },
-    [organizationName, mutate]
+    [projectName, mutate]
   );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Create Organisation</Button>
+        <Button variant="ghost">Create Project</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Organization</DialogTitle>
+          <DialogTitle>Create Project</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -65,11 +65,11 @@ export function CreateOrganizationModal() {
             </Label>
             <Input
               id="name"
-              value={organizationName}
-              placeholder="Organization Name"
+              value={projectName}
+              placeholder="Project Name"
               onChange={(e) => {
                 e.preventDefault();
-                setOrganizationName(e.target.value);
+                setProjectName(e.target.value);
               }}
               className="col-span-3"
             />
