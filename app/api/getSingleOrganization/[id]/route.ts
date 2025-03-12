@@ -19,13 +19,13 @@ const GET=async(req:NextApiRequest,{params}:{params:{id?:string}})=>{
     //     }
     //   });
 
-      const org=await prisma.organization.findMany({
-        where:{
-            id:orgId
+      const org = await prisma.organization.findUnique({
+        where: {
+          id: orgId,
         },
-        include:{
-            projects:true
-        }
+        include: {
+          projects: true,
+        },
       });
 
     //   const filteredOrg=org.map((org)=>{

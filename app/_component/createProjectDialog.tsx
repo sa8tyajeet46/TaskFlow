@@ -18,25 +18,47 @@ import CreateOrganization from "../api/organization/route";
 import { toast } from "sonner";
 import useOrganization from "@/hooks/useOrganization";
 import { useSWRConfig } from "swr";
+import { Textarea } from "@/components/ui/textarea";
+import GlobalDatePicker from "./GlobalDatePicker";
+import CreateProject from "../api/Project/route";
 
-export function CreateProjectModal() {
+export function CreateProjectModal({
+  organizationId,
+}: {
+  organizationId: string;
+}) {
   const { mutate } = useSWRConfig();
-  const [projectName, setProjectName] = useState("");
+  const [projectObj, setProjectObj] = useState({
+    projectName: "",
+    description: "",
+    // startDate: undefined,
+    // endDate: undefined,
+  });
+  const [startDate, setstartDate] = useState<Date>();
+  const [endDate, setendDate] = useState<Date>();
   const [open, setOpen] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.MouseEvent) => {
       e.preventDefault();
+      const requestObj = {
+        projectName: projectObj.projectName,
+        description: projectObj.description,
+        organizationId: organizationId,
+        startDate: startDate ? startDate : new Date(Date.now()),
+        endDate: endDate ? endDate : new Date(Date.now()),
+      };
       try {
-        if (!projectName) {
-          toast.error("Please provide organization name");
-          return;
-        }
+        const org = await CreateProject(
+          requestObj.projectName,
+          requestObj.description,
+          requestObj.organizationId,
+          requestObj.startDate,
+          requestObj.endDate
+        );
 
-        const org = await CreateOrganization(projectName);
-
-        // mutate("/api/getOrganization");
-        // toast.success("Organization created successfully");
+        mutate(`/api/getSingleOrganization/${organizationId}`);
+        toast.success("project created successfully");
 
         // Close the dialog after successful submission
         setOpen(false);
@@ -46,7 +68,7 @@ export function CreateProjectModal() {
         throw Error(error?.message || "Internal server error");
       }
     },
-    [projectName, mutate]
+    [setProjectObj, startDate, endDate, projectObj]
   );
 
   return (
@@ -58,21 +80,51 @@ export function CreateProjectModal() {
         <DialogHeader>
           <DialogTitle>Create Project</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              value={projectName}
-              placeholder="Project Name"
-              onChange={(e) => {
-                e.preventDefault();
-                setProjectName(e.target.value);
-              }}
-              className="col-span-3"
-            />
+        <div className=" gap-4 py-4">
+          <div className="flex flex-col space-y-2">
+            <div>
+              {" "}
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                value={projectObj.projectName}
+                placeholder="Project Name"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setProjectObj({ ...projectObj, projectName: e.target.value });
+                }}
+                className="col-span-3"
+              />
+            </div>
+            <div>
+              <Label htmlFor="name" className="text-right">
+                Description
+              </Label>
+              <Textarea
+                id="description"
+                value={projectObj.description}
+                placeholder="Project Description"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setProjectObj({ ...projectObj, description: e.target.value });
+                }}
+                className="col-span-3"
+              />
+            </div>
+            <div className="flex w-full justify-between items-center">
+              <Label htmlFor="name" className="text-right">
+                Start Date
+              </Label>
+              <GlobalDatePicker date={startDate} setDate={setstartDate} />
+            </div>
+            <div className="flex w-full justify-between items-center">
+              <Label htmlFor="name" className="text-right">
+                End Date
+              </Label>
+              <GlobalDatePicker date={endDate} setDate={setendDate} />
+            </div>
           </div>
         </div>
         <DialogFooter>
