@@ -6,6 +6,7 @@ import useOrganization from "@/hooks/useOrganization";
 import { authSignOut } from "./auth/action";
 import OrganizationCard from "./_component/OrganizationCard";
 import { CreateOrganizationModal } from "./_component/createOrganizationDialog";
+import { SessionProvider } from "next-auth/react";
 export default function Home() {
   const handleSignout = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();

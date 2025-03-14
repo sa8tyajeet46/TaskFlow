@@ -12,9 +12,9 @@ type organizationParamProps = {
 function page({ params }: organizationParamProps) {
   const { id } = params;
   const { data, isLoading, error } = useSingleOrganization(id);
-  console.log(data);
+
   const projects = data?.projects ?? [];
-  console.log(projects);
+
   return (
     <div>
       <CreateProjectModal organizationId={id} />
