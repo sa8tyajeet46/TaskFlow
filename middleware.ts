@@ -8,10 +8,13 @@ export default async function authMiddleware(req: NextRequest) {
    
   const isLoggedIn = !!(await auth());
 
+  console.log(isLoggedIn, "ll");
+
   const { nextUrl } = req;
 
   const isAuthApiRoutes = String(nextUrl.pathname).startsWith(AuthApiRoutes);
 
+ 
   if (isAuthApiRoutes) {
     return null;
   }

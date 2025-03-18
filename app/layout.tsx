@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { DayPicker, DayPickerProvider } from "react-day-picker";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

@@ -1,6 +1,7 @@
 "use client"
 import { CreateProjectModal } from '@/app/_component/createProjectDialog'
-import useSingleOrganization from '@/hooks/getSinglerganization'
+import Header from "@/app/_component/Header";
+import useSingleOrganization from "@/hooks/getSinglerganization";
 import Link from "next/link";
 import React from "react";
 
@@ -16,8 +17,9 @@ function page({ params }: organizationParamProps) {
   const projects = data?.projects ?? [];
 
   return (
-    <div>
-      <CreateProjectModal organizationId={id} />
+    <div className="w-full min-h-screen bg-slate-200">
+      <Header organizationId={id} />
+      {/* <CreateProjectModal organizationId={id} /> */}
       {projects.map((project: any) => {
         return (
           <div>

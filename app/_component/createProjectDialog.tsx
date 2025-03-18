@@ -21,6 +21,7 @@ import { useSWRConfig } from "swr";
 import { Textarea } from "@/components/ui/textarea";
 import GlobalDatePicker from "./GlobalDatePicker";
 import CreateProject from "../api/Project/route";
+import { PlusIcon } from "lucide-react";
 
 export function CreateProjectModal({
   organizationId,
@@ -74,7 +75,13 @@ export function CreateProjectModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Create Project</Button>
+        <Button
+          variant="taskFlow"
+          className="border border-black hover:border-transparent"
+        >
+          <PlusIcon size={35} />
+          Create Project
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

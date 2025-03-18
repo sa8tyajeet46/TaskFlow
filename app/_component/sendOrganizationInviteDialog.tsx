@@ -19,25 +19,30 @@ import { toast } from "sonner";
 import useOrganization from "@/hooks/useOrganization";
 import { useSWRConfig } from "swr";
 import { PlusIcon } from "lucide-react";
+import sendOrganizationInvite from "../api/organization/sendOrganizationInvte";
 
-export function CreateOrganizationModal() {
+declare type SendOrganizationInviteModalProps={
+  organizationId:string;
+}
+export function SendOrganizationInviteModal({organizationId}:SendOrganizationInviteModalProps) {
   const { mutate } = useSWRConfig();
-  const [organizationName, setOrganizationName] = useState("");
+  const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.MouseEvent) => {
       e.preventDefault();
       try {
-        if (!organizationName) {
-          toast.error("Please provide organization name");
+        if (!email) {
+          toast.error("Please provide email");
           return;
         }
+        // console.log(email);
+        // console.log(organizationId);
+        const org = await sendOrganizationInvite(organizationId,email);
 
-        const org = await CreateOrganization(organizationName);
-
-        mutate("/api/getOrganization");
-        toast.success("Organization created successfully");
+        // mutate("/api/getOrganization");
+        // toast.success("Organization created successfully");
 
         // Close the dialog after successful submission
         setOpen(false);
@@ -47,7 +52,7 @@ export function CreateOrganizationModal() {
         throw Error(error?.message || "Internal server error");
       }
     },
-    [organizationName, mutate]
+    [email, mutate]
   );
 
   return (
@@ -58,33 +63,36 @@ export function CreateOrganizationModal() {
           className="border border-black hover:border-transparent"
         >
           <PlusIcon size={35} />
-          Create Organisation
+        Send Invite
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Organization</DialogTitle>
+          <DialogTitle>Send Invite Link</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Email
             </Label>
             <Input
               id="name"
-              value={organizationName}
-              placeholder="Organization Name"
+              type="email"
+              value={email}
+              placeholder="Email"
               onChange={(e) => {
                 e.preventDefault();
-                setOrganizationName(e.target.value);
+                setEmail(e.target.value);
               }}
               className="col-span-3"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSubmit}>
-            Submit
+          <Button type="button" 
+          onClick={handleSubmit}
+          >
+            Send Link
           </Button>
         </DialogFooter>
       </DialogContent>
