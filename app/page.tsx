@@ -36,8 +36,8 @@ export default function Home() {
         <div className="flex  md:px-8 px-4 flex-wrap gap-8">
           {!data && (
             <>
-              {Array(6)
-                .fill(6)
+              {Array(5)
+                .fill(5)
                 .map((_, index) => (
                   <OrganizationCard.skeleton key={index} />
                 ))}

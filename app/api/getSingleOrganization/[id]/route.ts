@@ -11,29 +11,33 @@ const GET=async(req:NextApiRequest,{params}:{params:{id?:string}})=>{
       {
         return Response.json({error:"user not authenticated"},{status:401});
       }
-     const {id:orgId}=params;
-     console.log(orgId)
-    //   const user=await prisma.user.findUnique({
-    //     where:{
-    //         id:session?.user?.id ?? ""
-    //     }
-    //   });
+
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session?.user?.email,
+        },
+      });
+      const { id: orgId } = params;
+      console.log(orgId);
 
       const org = await prisma.organization.findUnique({
         where: {
           id: orgId,
         },
         include: {
-          projects: true,
+          projects: {
+            where: {
+              members: {
+                some: {
+                  userId: user?.id ?? "",
+                },
+              },
+            },
+          },
         },
       });
 
-    //   const filteredOrg=org.map((org)=>{
-    //     const forg={...org,organizationName:org.organization.name};
-        
-
-    //     return forg
-    //   })
+   
 
       return Response.json(org);
     }

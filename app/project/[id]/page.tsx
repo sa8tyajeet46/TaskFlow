@@ -6,6 +6,8 @@ import TaskDropDown from "./_componenet/TaskDropDown";
 import CreateTaskDialog from "@/app/_component/createTaskDialog";
 import SearchInput from "@/app/_component/SearchInput";
 import FilterTask from "./_componenet/FilterTask";
+import { AddMemberModal } from "@/app/_component/addMemberToProjectDialog";
+import Header from "@/app/_component/Header";
 
 type projectParamProps = {
   params: {
@@ -23,8 +25,10 @@ function page({ params, searchParams }: projectParamProps) {
   const { data, error, isLoading } = useTaskList(id);
 
   return (
-    <div>
+    <div className="w-full min-h-screen bg-slate-200">
+      <Header organizationId={id} />
       <SearchInput id={id} />
+      {/* <AddMemberModal /> */}
       <CreateTaskListModal projectId={id} />
       <FilterTask id={id} />
       <div className="grid grid-cols-4">

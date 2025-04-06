@@ -37,19 +37,22 @@ export function SendOrganizationInviteModal({organizationId}:SendOrganizationInv
           toast.error("Please provide email");
           return;
         }
-        // console.log(email);
-        // console.log(organizationId);
-        const org = await sendOrganizationInvite(organizationId,email);
+     
+        const response = await sendOrganizationInvite(organizationId,email);
 
-        // mutate("/api/getOrganization");
-        // toast.success("Organization created successfully");
+        if(!response.success)
+        {
+           toast.error(response.message);
+        }
+        else
+        {
+          toast.success(response.message);
+        }
 
-        // Close the dialog after successful submission
+       
         setOpen(false);
       } catch (error: any) {
-        console.log(error);
-        toast.error(error?.message || "Internal server error");
-        throw Error(error?.message || "Internal server error");
+        toast.error("Internal server error");
       }
     },
     [email, mutate]
