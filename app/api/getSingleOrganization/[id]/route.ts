@@ -4,12 +4,14 @@ import { NextApiRequest } from "next";
 
 
 const GET=async(req:NextApiRequest,{params}:{params:{id?:string}})=>{
-    try{
-      const session=await auth();
-      
-      if(!session?.user?.email)
-      {
-        return Response.json({error:"user not authenticated"},{status:401});
+    try {
+      const session = await auth();
+
+      if (!session?.user?.email) {
+        return Response.json(
+          { error: "user not authenticated" },
+          { status: 401 }
+        );
       }
 
       const user = await prisma.user.findUnique({
@@ -18,7 +20,6 @@ const GET=async(req:NextApiRequest,{params}:{params:{id?:string}})=>{
         },
       });
       const { id: orgId } = params;
-      console.log(orgId);
 
       const org = await prisma.organization.findUnique({
         where: {
@@ -37,13 +38,9 @@ const GET=async(req:NextApiRequest,{params}:{params:{id?:string}})=>{
         },
       });
 
-   
-
       return Response.json(org);
-    }
-    catch(error){
-      console.log(error);
-        return Response.json({error:"Internal server error"},{status:500});
+    } catch (error) {
+      return Response.json({ error: "Internal server error" }, { status: 500 });
     }
 }
 

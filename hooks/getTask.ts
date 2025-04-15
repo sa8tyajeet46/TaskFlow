@@ -13,15 +13,14 @@ const useTask = (id:string,search?:string,status?:string,priority?:string,assign
   // Construct the URL with all parameters in one go
   const url = queryString.stringifyUrl(
     {
-      url: `/api/getTasks/${id}`, // replace with your actual base path
-      query: query
+      url: `/api/getTaskList/${id}`, // replace with your actual base path
+      query: query,
     },
     {
       skipEmptyString: true,
-      skipNull: true
+      skipNull: true,
     }
   );
-  console.log(url);
  
   const { data, isLoading, error ,mutate} = useSWR(url, fetcher,
     {

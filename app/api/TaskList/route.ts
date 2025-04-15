@@ -14,19 +14,16 @@ position?:number
       return Error("user not authenticated");
     }
 
-      const taskList = await prisma.taskList.create({
-        data: {
-         projectId:projectId,
-         name:name,
-         position:position
-        },
-      });
-     
-
+    const taskList = await prisma.taskList.create({
+      data: {
+        projectId: projectId,
+        name: name,
+        position: position,
+      },
+    });
 
     return taskList;
   } catch (error) {
-    console.log(error);
     return Error("Internal Server Error");
   }
 }

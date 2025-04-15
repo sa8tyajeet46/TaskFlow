@@ -16,7 +16,6 @@ function page({ params }: organizationParamProps) {
   const { data, isLoading, error } = useSingleOrganization(id);
 
   const projects = data?.projects ?? [];
-  console.log(data);
 
   return (
     <div className="w-full min-h-screen bg-slate-200">

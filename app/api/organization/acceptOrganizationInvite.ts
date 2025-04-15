@@ -82,7 +82,7 @@ export default async function acceptOrganizationInvite(
     };
 
   } catch (error) {
-    console.log(error);
+
     return {
       success: false,
       message: "Internal Server Error",

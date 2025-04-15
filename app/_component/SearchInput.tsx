@@ -6,23 +6,26 @@ import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import queryString from "query-string";
 
-function SearchInput({id}:{id:string}) {
+type SearchInputProps = {
+  id: string;
+};
+
+function SearchInput({ id }: SearchInputProps) {
   const router = useRouter();
   const [value, setValue] = useState("");
-
-  const [debouncedValue] = useDebounce(value, 1000);
+  const [debouncedValue] = useDebounce(value, 500); // faster debounce for better UX
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
   useEffect(() => {
-     const currentQueryParams = queryString.parse(window.location.search);
-    
-         const newQueryParams = {
-           ...currentQueryParams,
-           search: debouncedValue
-         };
+    const currentQueryParams = queryString.parse(window.location.search);
+    const newQueryParams = {
+      ...currentQueryParams,
+      search: debouncedValue,
+    };
+
     const url = queryString.stringifyUrl(
       {
         url: `/project/${id}`,
@@ -33,20 +36,20 @@ function SearchInput({id}:{id:string}) {
         skipNull: true,
       }
     );
-    console.log(url);
+
     router.push(url);
-  }, [router, debouncedValue]);
+  }, [debouncedValue]);
 
   return (
-    <div className="lg:flex flex-1  hidden  relative ">
-      <Search className="absolute top-2 left-2"></Search>
+    <div className="relative w-full max-w-md hidden lg:block">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
       <Input
-        className="pl-9 border-2  bg-[#f4f4f4] max-w-[567px] focus:!outline-0 focus:!ring-0 border-none"
-        placeholder="search"
         type="text"
+        placeholder="Search tasks..."
         value={value}
         onChange={handleSearch}
-      ></Input>
+        className="pl-10 py-2 bg-white border border-gray-300 rounded-xl shadow-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 transition"
+      />
     </div>
   );
 }

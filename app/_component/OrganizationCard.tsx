@@ -36,13 +36,11 @@ function OrganizationCard({
   const handleEditClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Edit organization", id);
   };
 
   const handleViewDetailsClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("View details", id);
   };
 
   return (

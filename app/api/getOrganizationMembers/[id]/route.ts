@@ -33,7 +33,6 @@ const GET=async(req:NextApiRequest,{params}:{params:{id?:string}})=>{
       return Response.json(members);
     }
     catch(error){
-      console.log(error);
         return Response.json({error:"Internal server error"},{status:500});
     }
 }

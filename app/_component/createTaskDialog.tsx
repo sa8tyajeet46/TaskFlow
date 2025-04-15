@@ -74,7 +74,7 @@ const CreateTaskDialog = ({ taskListId,projectid,createdbyId}:CreateTaskDialogPr
         // Reset form and close dialog
         resetForm();
         toast.success("Task Created Successfully");
-        mutate(`/api/getTasks/${taskListId}`);
+        mutate(`/api/getTaskList/${projectid}`);
         setOpen(false);
       }
     } catch (err) {

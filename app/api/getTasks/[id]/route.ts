@@ -18,38 +18,34 @@ export async function GET(
         email: session?.user?.email ?? ""
       }
     });
-    console.log(user?.id)
+
     const { id } = params;
 
     const searchParams = req.nextUrl.searchParams;
-    const search = searchParams.get('search')
-    const status=searchParams.get('status');
-    const priority=searchParams.get('priority');
-    const assignedTOMe=searchParams.get('assignedTOMe');
-    console.log(search);
+    const search = searchParams.get("search");
+    const status = searchParams.get("status");
+    const priority = searchParams.get("priority");
+    const assignedTOMe = searchParams.get("assignedTOMe");
 
-    const where :any= {
+    const where: any = {
       taskListId: id,
       title: {
-        contains: search ?? ""
-      }
+        contains: search ?? "",
+      },
     };
-    
+
     // Only add status to the where clause if it exists
     if (status) {
       where.status = status;
     }
 
-    if(priority)
-    {
-      where.priority=priority;
+    if (priority) {
+      where.priority = priority;
     }
 
-    if(assignedTOMe && assignedTOMe==="true")
-    {
-      where.assignedToId=user?.id ??""
+    if (assignedTOMe && assignedTOMe === "true") {
+      where.assignedToId = user?.id ?? "";
     }
-    console.log(where);
     const tasks = await prisma.task.findMany({
       where
     });

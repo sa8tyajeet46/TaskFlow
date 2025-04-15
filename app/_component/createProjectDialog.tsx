@@ -64,7 +64,6 @@ export function CreateProjectModal({
         // Close the dialog after successful submission
         setOpen(false);
       } catch (error: any) {
-        console.log(error);
         toast.error(error?.message || "Internal server error");
         throw Error(error?.message || "Internal server error");
       }

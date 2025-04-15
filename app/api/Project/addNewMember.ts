@@ -8,7 +8,6 @@ export default async function addMemberToProject(
   projectId:string
 ) {
   try {
-
     const session = await auth();
 
     if (!session?.user?.email) {
@@ -18,11 +17,11 @@ export default async function addMemberToProject(
       };
     }
 
-    const user=await prisma.user.findUnique({
-      where:{
-        email:session?.user?.email ?? ""
-      }
-    })
+    const user = await prisma.user.findUnique({
+      where: {
+        email: session?.user?.email ?? "",
+      },
+    });
 
     if (!user) {
       return {
@@ -31,88 +30,71 @@ export default async function addMemberToProject(
       };
     }
 
-    const project=await prisma.project.findUnique({
-      where:{
-        id:projectId
-      }
-    })
-    if(!project)
-    {
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    });
+    if (!project) {
       return {
         success: false,
         message: "Project not found",
       };
     }
 
-
     const usertobeAdded = await prisma.user.findUnique({
       where: {
-        id:id
+        id: id,
       },
     });
-    if(!usertobeAdded)
-    {
+    if (!usertobeAdded) {
       return {
         success: false,
         message: "user not found",
       };
     }
 
-    const isUserAdminOfProject=await prisma.projectMember.findFirst({
-      where:{
-        projectId:project.id,
-        userId:user?.id
-      }
+    const isUserAdminOfProject = await prisma.projectMember.findFirst({
+      where: {
+        projectId: project.id,
+        userId: user?.id,
+      },
     });
 
-    if(isUserAdminOfProject?.role!="admin")
-    {
+    if (isUserAdminOfProject?.role != "admin") {
       return {
         success: false,
         message: "only admin can add new members",
       };
     }
 
-    const isAlreadyaMember=await prisma.projectMember.findFirst({
-      where:{
-        projectId:projectId,
-        userId:usertobeAdded?.id ??""
-      }
+    const isAlreadyaMember = await prisma.projectMember.findFirst({
+      where: {
+        projectId: projectId,
+        userId: usertobeAdded?.id ?? "",
+      },
     });
 
-    if(isAlreadyaMember)
-    {
+    if (isAlreadyaMember) {
       return {
         success: false,
         message: "already a member",
       };
     }
 
-    const projectMember=await prisma.projectMember.create({
-      data:{
-        projectId:project.id,
-        userId:usertobeAdded.id 
-      }
-    })
-
-    console.log(projectMember,"pro")
-
-
- 
-
- 
-   
-
-   
+    const projectMember = await prisma.projectMember.create({
+      data: {
+        projectId: project.id,
+        userId: usertobeAdded.id,
+      },
+    });
 
     return {
       success: true,
       message: "joined successfully",
       projectMember,
     };
-
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       message: "Internal Server Error",

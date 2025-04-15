@@ -38,8 +38,7 @@ export function AddMemberModal({organizationId,projectId}:AddMemberModalProps) {
 //   const [organizationName, setOrganizationName] = useState("");
   const [open, setOpen] = useState(false);
   const [member,setMember]=useState<string | undefined>(undefined);
-  const {data,error,isLoading}=useOrganizationMembers(organizationId)
-  console.log(member);
+  const { data, error, isLoading } = useOrganizationMembers(organizationId);
 
   const handleSubmit = useCallback(
     async (e: React.MouseEvent) => {
@@ -50,15 +49,12 @@ export function AddMemberModal({organizationId,projectId}:AddMemberModalProps) {
           return;
         }
 
-        const response = await addMemberToProject(member,projectId);
-        if(!response.success)
-          {
-             toast.error(response.message);
-          }
-          else
-          {
-            toast.success(response.message);
-          }
+        const response = await addMemberToProject(member, projectId);
+        if (!response.success) {
+          toast.error(response.message);
+        } else {
+          toast.success(response.message);
+        }
 
         // mutate("/api/getOrganization");
         // toast.success("Organization created successfully");
@@ -66,7 +62,6 @@ export function AddMemberModal({organizationId,projectId}:AddMemberModalProps) {
         // Close the dialog after successful submission
         setOpen(false);
       } catch (error: any) {
-        console.log(error);
         toast.error(error?.message || "Internal server error");
         throw Error(error?.message || "Internal server error");
       }

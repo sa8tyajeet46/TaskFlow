@@ -36,9 +36,8 @@ export function CreateTaskListModal({projectId}:CreateTaskListModalProps) {
         //   toast.error("Please provide organization name");
         //   return;
         // }
-        console.log(projectId);
-        console.log(taskListName);
-        const org = await CreateTaskList(projectId,taskListName);
+
+        const org = await CreateTaskList(projectId, taskListName);
 
         mutate(`/api/getTaskList/${projectId}`);
         toast.success("Organization created successfully");
@@ -46,18 +45,17 @@ export function CreateTaskListModal({projectId}:CreateTaskListModalProps) {
         // Close the dialog after successful submission
         setOpen(false);
       } catch (error: any) {
-        console.log(error);
         toast.error(error?.message || "Internal server error");
         throw Error(error?.message || "Internal server error");
       }
     },
-    [taskListName,mutate]
+    [taskListName, mutate]
   );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Create Task List</Button>
+        <Button variant="outline">Create Task List</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -17,8 +17,7 @@ organizationId?:string;
 function Header({organizationId}:HeaderProps) {
   
  const pathName=usePathname();
- const isOrganizationDashboard=pathName?.includes("organizations");
- console.log(pathName);
+ const isOrganizationDashboard = pathName?.includes("organizations");
     const handleSignout = useCallback(async (e: React.MouseEvent) => {
         e.preventDefault();
         try {

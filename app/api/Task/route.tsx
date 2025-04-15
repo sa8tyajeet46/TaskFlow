@@ -25,33 +25,27 @@ export default async function CreateTask(
     }
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user?.email ?? ""
-      }
+        email: session?.user?.email ?? "",
+      },
     });
-   
-    console.log(assignedToId)
 
-      const task = await prisma.task.create({
-        data: {
-         title:title,
-         description:description,
-         projectId:projectId,
-         taskListId:taskListId,
-         status:status,
-         priority:priority,
-         dueDate:dueDate,
-         createdById:user?.id ?? "",
-         assignedToId:assignedToId,
-         estimatedHours:0.00,
-        },
-      });
-
-    
-      
+    const task = await prisma.task.create({
+      data: {
+        title: title,
+        description: description,
+        projectId: projectId,
+        taskListId: taskListId,
+        status: status,
+        priority: priority,
+        dueDate: dueDate,
+        createdById: user?.id ?? "",
+        assignedToId: assignedToId,
+        estimatedHours: 0.0,
+      },
+    });
 
     return task;
   } catch (error) {
-    console.log(error);
     return Error("Internal Server Error");
   }
 }
